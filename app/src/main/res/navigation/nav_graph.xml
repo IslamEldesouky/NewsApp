@@ -7,5 +7,20 @@
     <fragment
         android:id="@+id/newsFragment"
         android:name="com.stc.newsapp.presentation.home.NewsFragment"
-        android:label="NewsFragment" />
+        android:label="NewsFragment" >
+        <action
+            android:id="@+id/action_newsFragment_to_newsDetailsFragment"
+            app:destination="@id/newsDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailsFragment"
+        android:name="com.stc.newsapp.presentation.details.NewsDetailsFragment"
+        android:label="NewsDetailsFragment" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="image"
+            app:argType="string" />
+    </fragment>
 </navigation>
