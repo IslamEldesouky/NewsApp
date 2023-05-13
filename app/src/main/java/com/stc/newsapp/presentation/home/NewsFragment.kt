@@ -17,6 +17,7 @@ class NewsFragment : Fragment() {
 
     private val newsViewModel: NewsViewModel by viewModels()
     private lateinit var binding: FragmentNewsBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
