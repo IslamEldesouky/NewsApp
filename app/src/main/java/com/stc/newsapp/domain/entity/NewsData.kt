@@ -7,10 +7,7 @@ import com.google.gson.annotations.SerializedName
 import com.stc.newsapp.data.local.Converters
 import com.stc.newsapp.data.local.DBConfig.Constants.NEWS_TABLE_NAME
 
-@Entity(tableName = NEWS_TABLE_NAME)
 data class NewsData(
-    @PrimaryKey(autoGenerate = true)
-    val id : Int,
     @SerializedName("articles")
     @field:TypeConverters(Converters::class)
     val newsResponse: List<NewsResponse>

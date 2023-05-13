@@ -1,31 +1,36 @@
 package com.stc.newsapp.presentation.home
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stc.newsapp.domain.entity.NewsData
+import androidx.paging.*
+import com.stc.newsapp.data.local.NewsDB
+import com.stc.newsapp.data.remote.NewsAPIService
+import com.stc.newsapp.data.repo.LoadingListener
+import com.stc.newsapp.data.repo.NewsRepositoryImpl
 import com.stc.newsapp.domain.entity.NewsResponse
-import com.stc.newsapp.domain.usecase.GetNewsUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
 @HiltViewModel
-class NewsViewModel @Inject constructor(private val getNewsUseCase: GetNewsUsecase) : ViewModel() {
+class NewsViewModel @Inject constructor(
+    private val newsAPIService: NewsAPIService, private val db: NewsDB
+) : ViewModel(), LoadingListener {
 
-    private val _newsResponse: MutableStateFlow<NewsData?> = MutableStateFlow(null)
-    val newsResponse: StateFlow<NewsData?> = _newsResponse
+    private var _isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    val isLoading: LiveData<Boolean> = _isLoading
 
-    fun getNewsResponse() {
-        viewModelScope.launch {
-            try {
-                _newsResponse.value = getNewsUseCase.getNewsResponse()
-            } catch (e: Exception) {
-                Log.e("ERROR", e.message.toString())
-            }
-        }
+    @ExperimentalPagingApi
+    fun getAllNews(): Flow<PagingData<NewsResponse>> = Pager(
+        config = PagingConfig(10, enablePlaceholders = false),
+        pagingSourceFactory = { db.newsDao().getNewsData() },
+        remoteMediator = NewsRepositoryImpl(newsAPIService, db = db, this)
+    ).flow.cachedIn(viewModelScope)
+
+    override fun isLoading(isLoading: Boolean) {
+        _isLoading.value = isLoading
     }
 }

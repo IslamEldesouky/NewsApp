@@ -2,14 +2,15 @@ package com.stc.newsapp.presentation.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.stc.newsapp.databinding.NewsItemBinding
 import com.stc.newsapp.domain.entity.NewsResponse
 
-class NewsAdapter(private val itemSelected: ItemSelected) :
-    ListAdapter<NewsResponse, NewsAdapter.ViewHolder>(NewsDiffCallback()) {
+class NewsAdapter  (private val itemSelected: ItemSelected) :
+    PagingDataAdapter<NewsResponse, NewsAdapter.ViewHolder>(NewsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemBinding =
@@ -18,7 +19,7 @@ class NewsAdapter(private val itemSelected: ItemSelected) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), itemSelected)
+        getItem(position)?.let { holder.bind(it, itemSelected) }
     }
 
     class ViewHolder(private val itemBinding: NewsItemBinding) :

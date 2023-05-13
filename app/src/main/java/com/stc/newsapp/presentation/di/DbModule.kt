@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.stc.newsapp.data.local.DBConfig
 import com.stc.newsapp.data.local.NewsDAO
 import com.stc.newsapp.data.local.NewsDB
+import com.stc.newsapp.data.local.RemoteKeysDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,4 +32,9 @@ object DbModule {
     @Singleton
     fun provideDao(database: NewsDB): NewsDAO =
         database.newsDao()
+
+    @Provides
+    @Singleton
+    fun provideRemoteKeyDao(database: NewsDB): RemoteKeysDao =
+        database.remoteKeysDAO()
 }

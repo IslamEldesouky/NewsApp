@@ -10,6 +10,7 @@ interface NewsAPIService {
     @GET(APIConfig.Constants.API_ENDPOINT)
     suspend fun getLatestHeadLines(
         @Query(APIConfig.Constants.QUERY_COUNTRY_NAME) country: String = APIConfig.Constants.QUERY_COUNTRY_VALUE,
-        @Query(APIConfig.Constants.QUERY_TOPIC_NAME) topic: String = APIConfig.Constants.QUERY_TOPIC_VALUE
+        @Query(APIConfig.Constants.QUERY_TOPIC_NAME) topic: String = APIConfig.Constants.QUERY_TOPIC_VALUE,
+        @Query(APIConfig.Constants.QUERY_PAGE) page: Int,
     ) : NewsData
 }
