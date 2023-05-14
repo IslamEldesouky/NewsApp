@@ -1,5 +1,6 @@
 package com.stc.newsapp.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,11 +32,15 @@ class NewsViewModel @Inject constructor(
         getItems()
     }
      private fun getItems() {
-        _items.value = Pager(
-            config = PagingConfig(10, enablePlaceholders = false),
-            pagingSourceFactory = { db.newsDao().getNewsData() },
-            remoteMediator = NewsRemoteMediator(newsAPIService, db = db, this)
-        ).flow.cachedIn(viewModelScope)
+         try{
+             _items.value = Pager(
+                 config = PagingConfig(10, enablePlaceholders = false),
+                 pagingSourceFactory = { db.newsDao().getNewsData() },
+                 remoteMediator = NewsRemoteMediator(newsAPIService, db = db, this)
+             ).flow.cachedIn(viewModelScope)
+         }catch (e:java.lang.Exception){
+             Log.d("ERROR", e.message.toString())
+         }
     }
 
     override fun isLoading(isLoading: Boolean) {
