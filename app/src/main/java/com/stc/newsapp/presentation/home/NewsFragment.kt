@@ -11,14 +11,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stc.newsapp.R
 import com.stc.newsapp.databinding.FragmentNewsBinding
 import com.stc.newsapp.domain.entity.NewsResponse
 import com.stc.newsapp.presentation.home.adapter.NewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -39,7 +37,6 @@ class NewsFragment : Fragment(), NewsAdapter.ItemSelected {
         return binding.root
     }
 
-    @OptIn(ExperimentalPagingApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
@@ -50,8 +47,14 @@ class NewsFragment : Fragment(), NewsAdapter.ItemSelected {
                     binding.progressBar.visibility = View.GONE
             }
             viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-                newsViewModel.getAllNews().collectLatest {
-                    adapter.submitData(it)
+                newsViewModel.items.observe(viewLifecycleOwner) {
+                    lifecycleScope.launch {
+                        it.collect {
+                            if (it != null) {
+                                adapter.submitData(it)
+                            }
+                        }
+                    }
                 }
             }
         }

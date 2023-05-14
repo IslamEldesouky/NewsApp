@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
+@OptIn(ExperimentalPagingApi::class)
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     private val newsAPIService: NewsAPIService, private val db: NewsDB
@@ -23,12 +24,19 @@ class NewsViewModel @Inject constructor(
     private var _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    @ExperimentalPagingApi
-    fun getAllNews(): Flow<PagingData<NewsResponse>> = Pager(
-        config = PagingConfig(10, enablePlaceholders = false),
-        pagingSourceFactory = { db.newsDao().getNewsData() },
-        remoteMediator = NewsRemoteMediator(newsAPIService, db = db, this)
-    ).flow.cachedIn(viewModelScope)
+    private val _items: MutableLiveData<Flow<PagingData<NewsResponse>?>> = MutableLiveData()
+    val items: LiveData<Flow<PagingData<NewsResponse>?>> = _items
+
+    init {
+        getItems()
+    }
+     private fun getItems() {
+        _items.value = Pager(
+            config = PagingConfig(10, enablePlaceholders = false),
+            pagingSourceFactory = { db.newsDao().getNewsData() },
+            remoteMediator = NewsRemoteMediator(newsAPIService, db = db, this)
+        ).flow.cachedIn(viewModelScope)
+    }
 
     override fun isLoading(isLoading: Boolean) {
         _isLoading.value = isLoading

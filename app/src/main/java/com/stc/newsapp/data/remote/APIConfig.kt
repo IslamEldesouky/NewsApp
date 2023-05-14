@@ -13,6 +13,6 @@ object APIConfig {
         const val QUERY_PAGE = "page"
         const val QUERY_PAGE_SIZE = "page_size"
         const val HEADER_KEY_NAME = "x-api-key"
-        const val HEADER_KEY_VALUE = "l_UZ3ukq924mlDCvOklSAtTs6vsX6MpfBrVl-rX04_w"
+        const val HEADER_KEY_VALUE = "0VQrTID3lGaqGCjJlmpKCAOMLArTt-w3V3HOFIikaAI"
     }
 }

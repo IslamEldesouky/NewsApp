@@ -76,7 +76,7 @@ class NewsRemoteMediatorTest {
     @OptIn(ExperimentalPagingApi::class)
     @Test
     fun initializeshouldreturnLAUNCH_INITIAL_REFRESH() {
-        runBlockingTest {
+        testScope.runTest {
             val result = remoteMediator?.initialize()
             assertEquals(RemoteMediator.InitializeAction.LAUNCH_INITIAL_REFRESH, result)
         }

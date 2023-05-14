@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/newsFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/newsFragment"
@@ -22,5 +22,13 @@
         <argument
             android:name="image"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
     </fragment>
 </navigation>

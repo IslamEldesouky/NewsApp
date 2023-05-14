@@ -37,7 +37,6 @@ class ApiTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        viewModel = NewsViewModel(newsAPIService,db)
     }
 
     @Test

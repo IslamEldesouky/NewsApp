@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.stc.newsapp.R
 import com.stc.newsapp.databinding.FragmentNewsDetailsBinding
 
@@ -27,10 +28,10 @@ class NewsDetailsFragment : Fragment() {
         initView()
     }
 
-    private fun initView(){
+    private fun initView() {
         val title = arguments?.getString("title")
         val image = arguments?.getString("image")
-        Glide.with(binding.root.context).load(image)
+        Glide.with(binding.root.context).load(image).diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.placeholder_empty).into(binding.ivImage)
         binding.titleText.text = title
     }
