@@ -8,7 +8,7 @@ import androidx.paging.*
 import com.stc.newsapp.data.local.NewsDB
 import com.stc.newsapp.data.remote.NewsAPIService
 import com.stc.newsapp.data.repo.LoadingListener
-import com.stc.newsapp.data.repo.NewsRepositoryImpl
+import com.stc.newsapp.data.repo.NewsRemoteMediator
 import com.stc.newsapp.domain.entity.NewsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +27,7 @@ class NewsViewModel @Inject constructor(
     fun getAllNews(): Flow<PagingData<NewsResponse>> = Pager(
         config = PagingConfig(10, enablePlaceholders = false),
         pagingSourceFactory = { db.newsDao().getNewsData() },
-        remoteMediator = NewsRepositoryImpl(newsAPIService, db = db, this)
+        remoteMediator = NewsRemoteMediator(newsAPIService, db = db, this)
     ).flow.cachedIn(viewModelScope)
 
     override fun isLoading(isLoading: Boolean) {

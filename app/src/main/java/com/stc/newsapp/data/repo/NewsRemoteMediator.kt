@@ -6,7 +6,6 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.stc.newsapp.data.local.NewsDAO
 import com.stc.newsapp.data.local.NewsDB
 import com.stc.newsapp.data.remote.NewsAPIService
 import com.stc.newsapp.domain.entity.NewsResponse
@@ -17,7 +16,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
-class NewsRepositoryImpl(
+class NewsRemoteMediator(
     private val newsAPIService: NewsAPIService,
     private val db: NewsDB,
     private val listener: LoadingListener
